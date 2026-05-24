@@ -172,20 +172,7 @@ textarea.dta:focus{border-color:var(--accent)}
 <header>
   <div style="display:flex;align-items:center;gap:14px;flex:1;min-width:0">
     <div class="logo"><div class="logo-dot"></div>거래대금 순위 트래커</div>
-    <div class="visitor-bar" id="visitorBar">
-      <div class="visitor-item">
-        <div class="visitor-dot vd-live"></div>
-        <span style="font-size:11px;color:var(--text3)">현재</span>
-        <span class="visitor-num live" id="vCurrent">—</span>
-        <span style="font-size:11px;color:var(--text3)">명</span>
-      </div>
-      <div class="visitor-item">
-        <div class="visitor-dot vd-total"></div>
-        <span style="font-size:11px;color:var(--text3)">누적</span>
-        <span class="visitor-num total" id="vTotal">—</span>
-        <span style="font-size:11px;color:var(--text3)">명</span>
-      </div>
-    </div>
+
   </div>
   <div class="hright">
     <div class="ss bi" id="syncSt" style="display:none"></div>
@@ -326,22 +313,7 @@ function checkAdmin(){
   document.getElementById('adminSection').classList.toggle('show',isAdmin);
 }
 
-// ── 방문자 카운터 ──
-function recordVisit(){
-  if(!SCRIPT_URL)return;
-  fetch(SCRIPT_URL+'?action=visit&sid='+SESSION_ID+'&t='+Date.now())
-    .then(r=>r.json()).then(d=>{if(d.total!==undefined)document.getElementById('vTotal').textContent=d.total.toLocaleString();}).catch(()=>{});
-}
-function fetchStats(){
-  if(!SCRIPT_URL)return;
-  fetch(SCRIPT_URL+'?action=stats&t='+Date.now())
-    .then(r=>r.json()).then(d=>{
-      if(d.current!==undefined)document.getElementById('vCurrent').textContent=d.current;
-      if(d.total!==undefined)document.getElementById('vTotal').textContent=d.total.toLocaleString();
-    }).catch(()=>{});
-}
-
-// ── 모달 (관리자 전용) ──
+// ── 초기화 ──
 function openModal(){document.getElementById('urlInput').value=localStorage.getItem('surl')||'';document.getElementById('modalErr').className='merr';document.getElementById('modalBg').classList.add('show');}
 function closeModal(){document.getElementById('modalBg').classList.remove('show');}
 function saveUrl(){
@@ -642,11 +614,6 @@ renderAll();
 
 // 모든 방문자: 앱 시작 시 자동으로 시트 데이터 불러오기
 autoLoad();
-
-// 방문자 카운터
-recordVisit();
-fetchStats();
-setInterval(fetchStats,60000);
 </script>
 </body>
 </html>
