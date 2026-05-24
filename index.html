@@ -8,16 +8,29 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0d0f14;--surface:#161a23;--surface2:#1e2330;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--text:#e8eaf0;--text2:#8a90a0;--text3:#555d70;--accent:#4f8ef7;--accent-dim:rgba(79,142,247,0.15);--green:#3ecf8e;--green-dim:rgba(62,207,142,0.13);--red:#f75f5f;--red-dim:rgba(247,95,95,0.13);--amber:#f5a623;--amber-dim:rgba(245,166,35,0.13);--purple:#a78bfa;--purple-dim:rgba(167,139,250,0.13);--radius:10px;--radius-sm:6px}
+body.light{--bg:#f0f2f7;--surface:#ffffff;--surface2:#e8ecf4;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.15);--text:#1a1d27;--text2:#5a6070;--text3:#9aa0b0;--accent:#2563eb;--accent-dim:rgba(37,99,235,0.12);--green:#16a34a;--green-dim:rgba(22,163,74,0.12);--red:#dc2626;--red-dim:rgba(220,38,38,0.12);--amber:#d97706;--amber-dim:rgba(217,119,6,0.12);--purple:#7c3aed;--purple-dim:rgba(124,58,237,0.12)}
+
+/* 다크/라이트 토글 */
+.theme-toggle{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.theme-label{font-size:12px;color:var(--text3);font-family:'IBM Plex Mono',monospace;min-width:28px}
+.theme-label.left{text-align:right}
+.toggle-track{width:44px;height:24px;border-radius:12px;background:var(--surface2);border:1px solid var(--border2);position:relative;cursor:pointer;transition:background .2s}
+body.light .toggle-track{background:#2563eb;border-color:#2563eb}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,0.3)}
+body.light .toggle-thumb{transform:translateX(20px)}
+.toggle-icon{font-size:11px;position:absolute;top:50%;transform:translateY(-50%);transition:opacity .2s}
+.toggle-icon.moon{left:6px;opacity:1}
+.toggle-icon.sun{right:5px;opacity:0}
+body.light .toggle-icon.moon{opacity:0}
+body.light .toggle-icon.sun{opacity:1}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6}
 
-/* header */
 header{border-bottom:1px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg);z-index:100;gap:8px;flex-wrap:wrap}
 .logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:15px;letter-spacing:-.3px;flex-shrink:0}
 .logo-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
 
-/* 방문자 카운터 */
 .visitor-bar{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text3);font-family:'IBM Plex Mono',monospace;flex-shrink:0}
 .visitor-item{display:flex;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:3px 9px}
 .visitor-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
@@ -42,7 +55,7 @@ select.ctrl:focus{border-color:var(--accent)}
 .ss.ld{background:var(--accent-dim);color:var(--accent)}
 .ss.bi{background:var(--amber-dim);color:var(--amber)}
 
-/* modal */
+/* 관리자 모달 */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:center;justify-content:center}
 .modal-bg.show{display:flex}
 .modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:24px;width:min(460px,90vw);display:flex;flex-direction:column;gap:14px}
@@ -60,25 +73,21 @@ select.ctrl:focus{border-color:var(--accent)}
 .merr{font-size:12px;font-family:'IBM Plex Mono',monospace;padding:6px 10px;border-radius:var(--radius-sm);display:none}
 .merr.show{display:block;background:var(--red-dim);color:var(--red)}
 
-/* view tabs */
 .vtabs{display:flex;border-bottom:1px solid var(--border);background:var(--surface)}
 .vtab{padding:10px 18px;font-size:13px;cursor:pointer;color:var(--text2);border-bottom:2px solid transparent;transition:all .15s;font-family:inherit;background:none;border-left:none;border-right:none;border-top:none}
 .vtab:hover{color:var(--text)}.vtab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:500}
 
-/* stats bar */
 .sbar{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border)}
 .sc{background:var(--bg);padding:12px 16px}
 .sl{font-size:10px;color:var(--text3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:3px}
 .sv{font-size:20px;font-weight:700;font-family:'IBM Plex Mono',monospace}
 .sv.g{color:var(--green)}.sv.b{color:var(--accent)}.sv.a{color:var(--amber)}
 
-/* filter bar */
 .fbar{display:flex;gap:4px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--surface);flex-wrap:wrap}
 .fb{display:flex;align-items:center;gap:5px;padding:4px 11px;border-radius:20px;border:1px solid transparent;background:transparent;color:var(--text2);font-size:12px;font-family:inherit;cursor:pointer;transition:all .15s}
 .fb:hover{background:var(--surface2);color:var(--text)}.fb.active{background:var(--surface2);border-color:var(--border2);color:var(--text);font-weight:500}
 .fbg{display:inline-flex;align-items:center;justify-content:center;min-width:17px;height:17px;padding:0 4px;border-radius:9px;font-size:10px;font-weight:700;font-family:'IBM Plex Mono',monospace}
 
-/* main */
 .main{display:grid;grid-template-columns:340px 1fr;height:calc(100vh - 52px - 42px - 52px - 42px);overflow:hidden}
 .sl-wrap{border-right:1px solid var(--border);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
 .sl-wrap::-webkit-scrollbar{width:4px}.sl-wrap::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
@@ -93,7 +102,6 @@ select.ctrl:focus{border-color:var(--accent)}
 .tag{display:inline-block;font-size:10px;padding:2px 6px;border-radius:4px;font-weight:600;letter-spacing:.2px;white-space:nowrap}
 .tl{background:var(--amber-dim);color:var(--amber)}.tu{background:var(--green-dim);color:var(--green)}.td{background:var(--red-dim);color:var(--red)}.tn{background:var(--accent-dim);color:var(--accent)}.ts{background:var(--purple-dim);color:var(--purple)}
 
-/* chart panel */
 .cp{display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
 .ce{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--text3);gap:8px;text-align:center;padding:20px}
 .cei{font-size:36px;opacity:.3}
@@ -110,7 +118,6 @@ select.ctrl:focus{border-color:var(--accent)}
 .cw{flex:1;position:relative;min-height:0}
 .cn{font-size:10px;color:var(--text3);text-align:right}
 
-/* heatmap */
 .hv{display:none;overflow:auto;padding:16px 20px}
 .hv.show{display:block}
 .ht{border-collapse:collapse;font-size:11px;font-family:'IBM Plex Mono',monospace;white-space:nowrap}
@@ -121,8 +128,9 @@ select.ctrl:focus{border-color:var(--accent)}
 .ht td.std:hover{color:var(--accent)}
 .hc{width:26px;height:20px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500}
 
-/* data section */
-.ds{border-top:1px solid var(--border);background:var(--surface)}
+/* 관리자 전용 패널 */
+.admin-section{border-top:1px solid var(--border);background:var(--surface);display:none}
+.admin-section.show{display:block}
 .dt{display:flex;align-items:center;gap:8px;padding:9px 18px;cursor:pointer;font-size:12px;color:var(--text2);border:none;background:none;width:100%;text-align:left;font-family:inherit}
 .dt:hover{color:var(--text)}
 .dp{display:none;padding:0 18px 14px;gap:8px;flex-direction:column}
@@ -144,10 +152,10 @@ textarea.dta:focus{border-color:var(--accent)}
 </head>
 <body>
 
-<!-- URL 설정 모달 -->
+<!-- 관리자 모달 -->
 <div class="modal-bg" id="modalBg">
   <div class="modal">
-    <h3>🔗 구글 시트 연동 설정</h3>
+    <h3>🔗 구글 시트 연동 설정 (관리자 전용)</h3>
     <div class="step"><div class="sn">1</div><div>구글 시트 → <strong>확장 프로그램 → Apps Script</strong><br>Code.gs 내용 붙여넣고 저장(Ctrl+S)</div></div>
     <div class="step"><div class="sn">2</div><div><strong>배포 → 새 배포 → 웹 앱</strong><br>실행: <strong>나</strong> / 액세스: <strong>모든 사용자</strong> → 배포</div></div>
     <div class="step"><div class="sn">3</div><div>배포 후 나온 <strong>웹 앱 URL</strong>을 아래에 붙여넣기</div></div>
@@ -157,14 +165,13 @@ textarea.dta:focus{border-color:var(--accent)}
       <button class="mbtn p" onclick="saveUrl()">저장 & 연결</button>
       <button class="mbtn s" onclick="closeModal()">닫기</button>
     </div>
-    <div class="mnote">⚠️ URL은 브라우저에만 저장됩니다.</div>
+    <div class="mnote">⚠️ URL은 이 브라우저에만 저장됩니다.</div>
   </div>
 </div>
 
 <header>
   <div style="display:flex;align-items:center;gap:14px;flex:1;min-width:0">
     <div class="logo"><div class="logo-dot"></div>거래대금 순위 트래커</div>
-    <!-- 방문자 카운터 -->
     <div class="visitor-bar" id="visitorBar">
       <div class="visitor-item">
         <div class="visitor-dot vd-live"></div>
@@ -181,15 +188,25 @@ textarea.dta:focus{border-color:var(--accent)}
     </div>
   </div>
   <div class="hright">
-    <div class="ss bi" id="syncSt">⚡ 내장 데이터</div>
+    <div class="ss bi" id="syncSt" style="display:none"></div>
+    <div class="theme-toggle">
+      <span class="theme-label left" id="themeLabel">다크</span>
+      <div class="toggle-track" onclick="toggleTheme()" role="switch" aria-label="테마 전환">
+        <div class="toggle-thumb"></div>
+        <span class="toggle-icon moon">🌙</span>
+        <span class="toggle-icon sun">☀️</span>
+      </div>
+      <span class="theme-label" id="themeLabelR" style="opacity:0.4">라이트</span>
+    </div>
     <span style="font-size:11px;color:var(--text3)">기간</span>
     <select class="ctrl" id="dSel" onchange="changeDays()">
       <option value="10">10일</option><option value="20">20일</option>
       <option value="30" selected>30일</option><option value="60">60일</option>
       <option value="999">전체</option>
     </select>
-    <button class="hbtn g" onclick="openModal()">⚙ URL 설정</button>
-    <button class="hbtn a" onclick="doSync()" id="syncBtn"><span id="sicon">↻</span> 시트 동기화</button>
+    <!-- 관리자 전용 버튼: URL이 저장된 경우에만 표시 -->
+    <button class="hbtn g" onclick="openModal()" id="setupBtn" style="display:none">⚙ URL 설정</button>
+    <button class="hbtn a" onclick="doSync()" id="syncBtn" style="display:none"><span id="sicon">↻</span> 시트 동기화</button>
   </div>
 </header>
 
@@ -203,7 +220,7 @@ textarea.dta:focus{border-color:var(--accent)}
   <div class="sc"><div class="sl">시장 주도주</div><div class="sv a" id="stL">—</div></div>
   <div class="sc"><div class="sl">순위 상승</div><div class="sv g" id="stR">—</div></div>
   <div class="sc"><div class="sl">신규 진입</div><div class="sv b" id="stN">—</div></div>
-  <div class="sc"><div class="sl">최근 업데이트</div><div style="font-size:11px;color:var(--text2);font-family:'IBM Plex Mono',monospace;margin-top:4px" id="stU">내장 데이터</div></div>
+  <div class="sc"><div class="sl">최근 업데이트</div><div style="font-size:11px;color:var(--text2);font-family:'IBM Plex Mono',monospace;margin-top:4px" id="stU">—</div></div>
 </div>
 
 <div class="fbar">
@@ -268,8 +285,9 @@ textarea.dta:focus{border-color:var(--accent)}
   <div style="overflow-x:auto"><table class="ht" id="hmT"></table></div>
 </div>
 
-<div class="ds">
-  <button class="dt" onclick="toggleD()"><span id="da">▶</span> 수동 데이터 추가 <span style="margin-left:auto;font-size:11px;color:var(--text3)">형식: 날짜,1위,2위,...,10위</span></button>
+<!-- 관리자 전용 패널 (URL 저장된 경우에만 표시) -->
+<div class="admin-section" id="adminSection">
+  <button class="dt" onclick="toggleD()"><span id="da">▶</span> 수동 데이터 추가 (관리자) <span style="margin-left:auto;font-size:11px;color:var(--text3)">형식: 날짜,1위,2위,...,10위</span></button>
   <div class="dp" id="dPanel">
     <div class="dd">예: <code>5/23,삼성전자,SK하이닉스,현대차,LG전자,삼성전기,두산에너빌리티,SK스퀘어,현대모비스,한미반도체,삼성SDI</code></div>
     <textarea class="dta" id="dInput" placeholder="5/23,삼성전자,SK하이닉스,...&#10;5/26,삼성전자,SK하이닉스,..."></textarea>
@@ -283,74 +301,80 @@ textarea.dta:focus{border-color:var(--accent)}
 </div>
 
 <script>
-// ── 내장 데이터 ──
+// ════════════════════════════════════════════════
+// ★ 여기에 Apps Script URL을 직접 입력하세요 ★
+// 이렇게 하면 모든 방문자가 자동으로 데이터를 불러옵니다
+// ════════════════════════════════════════════════
+const FIXED_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxf_NuGHLQhfhW_cO6xZQreZqbVeKzsWkndwk_kpr2k0gIwrap7qfmqe_s3Ry6pz8SH/exec';
+
+// ── 내장 데이터 (오프라인 폴백) ──
 const BUILT_IN={"12/01":{"1":"SK하이닉스","2":"삼성전자","3":"고영","4":"에코프로","5":"클로봇","6":"한라캐스트","7":"한올바이오파마","8":"알테오젠","9":"삼양바이오팜","10":"에이비엘바이오"},"12/02":{"1":"SK하이닉스","2":"삼성전자","3":"삼성에피스홀딩스","4":"고영","5":"두산에너빌리티","6":"프로티나","7":"로보티즈","8":"에코프로","9":"현대차","10":"현대오토에버"},"12/03":{"1":"삼성전자","2":"삼성에피스홀딩스","3":"두산에너빌리티","4":"인벤티지랩","5":"고영","6":"한화에어로스페이스","7":"삼성물산","8":"지투지바이오","9":"NAVER","10":"스맥"},"12/04":{"1":"삼성전자","2":"삼성에피스홀딩스","3":"현대오토에버","4":"현대차","5":"로보티즈","6":"레인보우로보틱스","7":"두산에너빌리티","8":"원익홀딩스","9":"한라캐스트","10":"뉴로핏"},"12/05":{"1":"삼성전자","2":"SK하이닉스","3":"현대차","4":"에코프로","5":"두산에너빌리티","6":"LG전자","7":"원익홀딩스","8":"현대건설","9":"한라캐스트","10":"비에이치아이"},"12/08":{"1":"SK하이닉스","2":"삼성전자","3":"에코프로","4":"현대차","5":"알테오젠","6":"에코프로비엠","7":"한화오션","8":"현대오토에버","9":"LG에너지솔루션","10":"클로봇"},"12/09":{"1":"삼성에피스홀딩스","2":"테라뷰","3":"에코프로","4":"에코프로비엠","5":"고영","6":"클로봇","7":"이수스페셜티케미컬","8":"삼성중공업","9":"알테오젠","10":"한화에어로스페이스"},"12/10":{"1":"SK하이닉스","2":"삼성전자","3":"테라뷰","4":"에이비엘바이오","5":"페스카로","6":"클로봇","7":"삼성SDI","8":"일동제약","9":"셀바스AI","10":"레인보우로보틱스"},"12/11":{"1":"일동제약","2":"삼성에피스홀딩스","3":"로보티즈","4":"이수페타시스","5":"이지스","6":"두산에너빌리티","7":"이뮨온시아","8":"삼성전기","9":"효성중공업","10":"올릭스"},"12/12":{"1":"삼성전자","2":"삼성에피스홀딩스","3":"SK하이닉스","4":"클로봇","5":"하림지주","6":"에임드바이오","7":"일동제약","8":"비에이치아이","9":"쿼드메디슨","10":"두산에너빌리티"},"12/15":{"1":"삼성에피스홀딩스","2":"원익홀딩스","3":"에임드바이오","4":"티엠씨","5":"클로봇","6":"삼표시멘트","7":"고려아연","8":"로보티즈","9":"알테오젠","10":"한라캐스트"},"12/16":{"1":"아크릴","2":"삼성에피스홀딩스","3":"에임드바이오","4":"현대무벡스","5":"두산에너빌리티","6":"디앤디파마텍","7":"에이피알","8":"쿼드메디슨","9":"한국전력","10":"엘앤씨바이오"},"12/17":{"1":"삼성전자","2":"나라스페이스테크놀로지","3":"SK하이닉스","4":"쿼드메디슨","5":"에코프로","6":"현대무벡스","7":"이수페타시스","8":"삼성전자우","9":"현대차","10":"한국전력"},"12/18":{"1":"삼성전자","2":"SK하이닉스","3":"삼성에피스홀딩스","4":"클로봇","5":"현대무벡스","6":"나라스페이스테크놀로지","7":"한화갤러리아","8":"알테오젠","9":"아크릴","10":"에임드바이오"},"12/19":{"1":"에스피지","2":"미래에셋벤처투자","3":"현대오토에버","4":"알테오젠","5":"나라스페이스테크놀로지","6":"현대차","7":"미래에셋증권","8":"NAVER","9":"클로봇","10":"에이비엘바이오"},"12/22":{"1":"삼성전자","2":"SK하이닉스","3":"현대무벡스","4":"나라스페이스테크놀로지","5":"에스피지","6":"두산에너빌리티","7":"클로봇","8":"삼진식품","9":"현대오토에버","10":"한미반도체"},"12/23":{"1":"삼성전자","2":"한화오션","3":"알지노믹스","4":"SK하이닉스","5":"레인보우로보틱스","6":"현대무벡스","7":"한화시스템","8":"미래에셋증권","9":"알테오젠","10":"원익홀딩스"},"12/24":{"1":"SK하이닉스","2":"현대무벡스","3":"알지노믹스","4":"현대차","5":"켄코아에어로스페이스","6":"한라캐스트","7":"나라스페이스테크놀로지","8":"원익홀딩스","9":"비츠로넥스텍","10":"휴림로봇"},"12/26":{"1":"삼성전자","2":"SK하이닉스","3":"알테오젠","4":"원익홀딩스","5":"삼성에피스홀딩스","6":"에이비엘바이오","7":"현대무벡스","8":"한미반도체","9":"삼성전자우","10":"노타"},"12/29":{"1":"SK하이닉스","2":"삼성전자","3":"원익홀딩스","4":"휴림로봇","5":"세미파이브","6":"알테오젠","7":"삼성에피스홀딩스","8":"한화에어로스페이스","9":"두산에너빌리티","10":"한라캐스트"},"12/30":{"1":"SK하이닉스","2":"삼성전자","3":"제주반도체","4":"원익홀딩스","5":"노타","6":"삼성에피스홀딩스","7":"현대오토에버","8":"현대차","9":"한화에어로스페이스","10":"HL만도"},"1/02":{"1":"삼성전자","2":"SK하이닉스","3":"셀트리온","4":"제주반도체","5":"한미반도체","6":"노타","7":"현대무벡스","8":"NAVER","9":"고영","10":"HL만도"},"1/05":{"1":"삼성전자","2":"SK하이닉스","3":"한미반도체","4":"두산에너빌리티","5":"삼성전자우","6":"셀트리온","7":"현대차","8":"제주반도체","9":"에이비엘바이오","10":"한화에어로스페이스"},"1/06":{"1":"SK하이닉스","2":"한미반도체","3":"현대차","4":"두산에너빌리티","5":"NAVER","6":"미래에셋증권","7":"한국항공우주","8":"삼성전자우","9":"한화오션","10":"셀트리온"},"1/07":{"1":"삼성전자","2":"SK하이닉스","3":"현대차","4":"한미반도체","5":"현대오토에버","6":"삼성전자우","7":"기아","8":"현대모비스","9":"한화오션","10":"슈어소프트테크"},"1/08":{"1":"SK하이닉스","2":"한화오션","3":"한화에어로스페이스","4":"삼성전기","5":"지투지바이오","6":"디앤디파마텍","7":"한국항공우주","8":"삼성중공업","9":"에이비엘바이오","10":"현대위아"},"1/09":{"1":"삼성전자","2":"현대차","3":"현대오토에버","4":"한화오션","5":"한화에어로스페이스","6":"삼성중공업","7":"두산에너빌리티","8":"알지노믹스","9":"알테오젠","10":"한국항공우주"},"1/12":{"1":"SK하이닉스","2":"한화오션","3":"현대차","4":"두산에너빌리티","5":"현대건설","6":"한화시스템","7":"현대글로비스","8":"NAVER","9":"미래에셋증권","10":"에코프로"},"1/13":{"1":"현대차","2":"한화시스템","3":"POSCO홀딩스","4":"한화오션","5":"고영","6":"현대오토에버","7":"현대모비스","8":"NAVER","9":"한국전력","10":"삼성SDI"},"1/14":{"1":"삼성전자","2":"현대차","3":"두산에너빌리티","4":"한화","5":"한미반도체","6":"현대건설","7":"기아","8":"뉴로메카","9":"유진로봇","10":"LS ELECTRIC"},"1/15":{"1":"삼성전자","2":"SK하이닉스","3":"현대차","4":"한화시스템","5":"한화오션","6":"한화","7":"레인보우로보틱스","8":"LG씨엔에스","9":"두산에너빌리티","10":"삼성중공업"},"1/16":{"1":"삼성전자","2":"SK하이닉스","3":"두산에너빌리티","4":"알테오젠","5":"포스코DX","6":"클로봇","7":"지투지바이오","8":"LG씨엔에스","9":"LG전자","10":"휴림로봇"},"1/19":{"1":"삼성전자","2":"현대차","3":"SK하이닉스","4":"두산에너빌리티","5":"두산로보틱스","6":"에스피지","7":"기아","8":"우리기술","9":"클로봇","10":"휴림로봇"},"1/20":{"1":"삼성전자","2":"현대차","3":"SK하이닉스","4":"두산에너빌리티","5":"한국전력","6":"알테오젠","7":"두산로보틱스","8":"삼성SDI","9":"우리기술","10":"고영"},"1/21":{"1":"삼성전자","2":"현대차","3":"SK하이닉스","4":"알테오젠","5":"우리기술","6":"한국전력","7":"두산에너빌리티","8":"휴림로봇","9":"기아","10":"HL만도"},"1/22":{"1":"삼성전자","2":"현대차","3":"SK하이닉스","4":"삼성SDI","5":"알테오젠","6":"두산에너빌리티","7":"에코프로","8":"이수스페셜티케미컬","9":"현대모비스","10":"기아"},"1/23":{"1":"삼성전자","2":"현대차","3":"SK하이닉스","4":"삼성SDI","5":"NAVER","6":"휴림로봇","7":"미래에셋증권","8":"카카오페이","9":"두산에너빌리티","10":"알테오젠"},"1/26":{"1":"삼성전자","2":"SK하이닉스","3":"에코프로","4":"현대차","5":"휴림로봇","6":"레인보우로보틱스","7":"카카오페이","8":"에이비엘바이오","9":"NAVER","10":"에코프로비엠"},"1/27":{"1":"SK하이닉스","2":"삼성전자","3":"현대차","4":"에코프로","5":"NAVER","6":"두산에너빌리티","7":"삼성SDI","8":"한전기술","9":"에이비엘바이오","10":"하나마이크론"},"1/28":{"1":"SK하이닉스","2":"삼성전자","3":"에코프로","4":"현대차","5":"삼성SDI","6":"제주반도체","7":"NAVER","8":"알테오젠","9":"한미반도체","10":"두산에너빌리티"},"1/29":{"1":"SK하이닉스","2":"삼성전자","3":"현대차","4":"에코프로","5":"한미반도체","6":"두산에너빌리티","7":"에코프로비엠","8":"NAVER","9":"미래에셋증권","10":"레인보우로보틱스"},"1/30":{"1":"SK하이닉스","2":"삼성전자","3":"현대차","4":"에이비엘바이오","5":"덕양에너젠","6":"한미반도체","7":"에코프로","8":"삼성SDI","9":"제주반도체","10":"두산에너빌리티"},"2/02":{"1":"SK하이닉스","2":"삼성전자","3":"에코프로","4":"현대차","5":"덕양에너젠","6":"두산에너빌리티","7":"삼성SDI","8":"한미반도체","9":"한화시스템","10":"SK스퀘어"},"2/03":{"1":"삼성전자","2":"SK하이닉스","3":"한화시스템","4":"현대차","5":"미래에셋증권","6":"에코프로","7":"SK스퀘어","8":"NAVER","9":"대한전선","10":"두산에너빌리티"},"2/04":{"1":"삼성전자","2":"SK하이닉스","3":"두산에너빌리티","4":"에코프로","5":"한화솔루션","6":"현대차","7":"한화시스템","8":"에이피알","9":"미래에셋증권","10":"한화오션"},"2/05":{"1":"삼성전자","2":"SK하이닉스","3":"한화솔루션","4":"현대차","5":"두산에너빌리티","6":"에코프로","7":"HD현대에너지솔루션","8":"카카오뱅크","9":"에이피알","10":"덕양에너젠"},"2/06":{"1":"삼성전자","2":"SK하이닉스","3":"한화솔루션","4":"현대차","5":"삼표시멘트","6":"에코프로","7":"두산에너빌리티","8":"HD현대에너지솔루션","9":"NAVER","10":"SK스퀘어"},"2/09":{"1":"삼성전자","2":"SK하이닉스","3":"한화솔루션","4":"두산에너빌리티","5":"미래에셋증권","6":"현대차","7":"에코프로","8":"제주반도체","9":"SK스퀘어","10":"아모레퍼시픽"},"2/10":{"1":"삼성전자","2":"SK하이닉스","3":"현대차","4":"한화솔루션","5":"한온시스템","6":"유진로봇","7":"대우건설","8":"한화에어로스페이스","9":"두산에너빌리티","10":"휴림로봇"},"2/11":{"1":"삼성전자","2":"SK하이닉스","3":"LG전자","4":"현대차","5":"한화솔루션","6":"두산에너빌리티","7":"우리기술","8":"셀트리온","9":"이마트","10":"한전산업"},"2/12":{"1":"삼성전자","2":"SK하이닉스","3":"한미반도체","4":"우리기술","5":"현대차","6":"LG전자","7":"두산에너빌리티","8":"POSCO홀딩스","9":"카카오","10":"삼성전자우"},"2/13":{"1":"삼성전자","2":"SK하이닉스","3":"두산에너빌리티","4":"미래에셋증권","5":"SK이터닉스","6":"현대차","7":"삼성전자우","8":"한국항공우주","9":"SK텔레콤","10":"LG전자"},"2/19":{"1":"삼성전자","2":"SK하이닉스","3":"한화솔루션","4":"에코프로","5":"미래에셋증권","6":"현대차","7":"두산에너빌리티","8":"삼성SDI","9":"한온시스템","10":"삼성전기"},"2/20":{"1":"SK하이닉스","2":"삼성전자","3":"두산에너빌리티","4":"한화오션","5":"한화시스템","6":"미래에셋증권","7":"현대차","8":"한화솔루션","9":"우리기술","10":"에코프로"},"2/23":{"1":"삼성전자","2":"SK하이닉스","3":"현대차","4":"LG전자","5":"에코프로","6":"두산에너빌리티","7":"삼성전기","8":"흥구석유","9":"미래에셋증권","10":"우리기술"},"2/24":{"1":"삼성전자","2":"SK하이닉스","3":"삼성SDI","4":"현대차","5":"미래에셋증권","6":"삼성전기","7":"한화비전","8":"두산에너빌리티","9":"대원전선","10":"에코프로"},"2/25":{"1":"삼성전자","2":"SK하이닉스","3":"현대차","4":"미래에셋증권","5":"현대오토에버","6":"삼성SDI","7":"기아","8":"두산로보틱스","9":"에코프로","10":"두산에너빌리티"},"2/26":{"1":"삼성전자","2":"SK하이닉스","3":"현대차","4":"한미반도체","5":"에코프로","6":"LG전자","7":"한화비전","8":"제주반도체","9":"NAVER","10":"삼천당제약"},"2/27":{"1":"삼성전자","2":"SK하이닉스","3":"현대차","4":"한미반도체","5":"두산에너빌리티","6":"현대건설","7":"삼성전자우","8":"삼천당제약","9":"현대제철","10":"한화시스템"},"3/03":{"1":"삼성전자","2":"SK하이닉스","3":"현대차","4":"한화에어로스페이스","5":"한화시스템","6":"현대로템","7":"한화오션","8":"에코프로","9":"두산에너빌리티","10":"한미반도체"},"3/04":{"1":"삼성전자","2":"SK하이닉스","3":"현대차","4":"한화시스템","5":"S-Oil","6":"한화에어로스페이스","7":"LIG넥스원","8":"한미반도체","9":"두산에너빌리티","10":"현대로템"},"3/05":{"1":"삼성전자","2":"SK하이닉스","3":"현대차","4":"LIG넥스원","5":"한미반도체","6":"한화시스템","7":"한화에어로스페이스","8":"S-Oil","9":"흥구석유","10":"케이뱅크"},"3/06":{"1":"삼성전자","2":"SK하이닉스","3":"LIG넥스원","4":"한화시스템","5":"두산에너빌리티","6":"한화에어로스페이스","7":"한화솔루션","8":"한미반도체","9":"현대차","10":"에코프로"},"3/09":{"1":"삼성전자","2":"SK하이닉스","3":"한화시스템","4":"현대차","5":"두산에너빌리티","6":"LIG넥스원","7":"한화에어로스페이스","8":"한미반도체","9":"포스코인터내셔널","10":"에코프로"},"3/10":{"1":"삼성전자","2":"SK하이닉스","3":"두산에너빌리티","4":"우리기술","5":"현대차","6":"한화시스템","7":"한미반도체","8":"LIG넥스원","9":"한화에어로스페이스","10":"에코프로"},"3/11":{"1":"삼성전자","2":"SK하이닉스","3":"미래에셋증권","4":"현대차","5":"두산에너빌리티","6":"우리기술","7":"한화오션","8":"한화시스템","9":"LIG넥스원","10":"삼성전자우"},"3/12":{"1":"삼성전자","2":"SK하이닉스","3":"삼표시멘트","4":"두산에너빌리티","5":"삼성중공업","6":"현대차","7":"HD현대에너지솔루션","8":"한화시스템","9":"SK이터닉스","10":"대한광통신"},"3/13":{"1":"삼성전자","2":"SK하이닉스","3":"두산에너빌리티","4":"우리기술","5":"SK이터닉스","6":"대우건설","7":"현대차","8":"LS머트리얼즈","9":"삼성중공업","10":"현대건설"},"3/16":{"1":"삼성전자","2":"SK하이닉스","3":"두산에너빌리티","4":"카나프테라퓨틱스","5":"현대차","6":"지투지바이오","7":"우리기술","8":"LIG넥스원","9":"흥아해운","10":"미래에셋증권"},"3/17":{"1":"삼성전자","2":"SK하이닉스","3":"현대차","4":"흥아해운","5":"삼성전기","6":"한화솔루션","7":"두산에너빌리티","8":"SK이터닉스","9":"HD현대에너지솔루션","10":"삼성전자우"},"3/18":{"1":"삼성전자","2":"SK하이닉스","3":"우리기술","4":"대우건설","5":"현대차","6":"두산에너빌리티","7":"삼성전자우","8":"삼성전기","9":"HPSP","10":"한미반도체"},"3/19":{"1":"삼성전자","2":"SK하이닉스","3":"SK이터닉스","4":"대우건설","5":"현대차","6":"우리기술","7":"한화시스템","8":"두산에너빌리티","9":"SK증권","10":"삼성전기"},"3/20":{"1":"삼성전자","2":"SK하이닉스","3":"SK이터닉스","4":"한화솔루션","5":"대우건설","6":"두산에너빌리티","7":"SK증권","8":"삼성전자우","9":"삼천당제약","10":"현대차"},"3/23":{"1":"삼성전자","2":"SK하이닉스","3":"현대차","4":"두산에너빌리티","5":"SK오션플랜트","6":"흥아해운","7":"삼성전자우","8":"삼성E&A","9":"대우건설","10":"삼천당제약"},"3/24":{"1":"삼성전자","2":"SK하이닉스","3":"흥아해운","4":"두산에너빌리티","5":"대우건설","6":"현대차","7":"삼천당제약","8":"SK이터닉스","9":"우리기술","10":"SK스퀘어"},"3/25":{"1":"삼성전자","2":"SK하이닉스","3":"한패스","4":"펄어비스","5":"LIG넥스원","6":"현대차","7":"삼천당제약","8":"쏠리드","9":"미래에셋증권","10":"DL이앤씨"},"3/26":{"1":"삼성전자","2":"SK하이닉스","3":"SK바이오팜","4":"한화솔루션","5":"SK오션플랜트","6":"셀바스AI","7":"메쥬","8":"현대차","9":"알테오젠","10":"LIG넥스원"},"3/27":{"1":"삼성전자","2":"SK하이닉스","3":"펄어비스","4":"현대차","5":"대우건설","6":"산일전기","7":"두산에너빌리티","8":"미래에셋벤처투자","9":"한화솔루션","10":"삼천당제약"},"3/30":{"1":"SK하이닉스","2":"삼성전자","3":"삼천당제약","4":"펄어비스","5":"현대차","6":"SK이터닉스","7":"두산에너빌리티","8":"삼성SDI","9":"우리로","10":"애경케미칼"},"3/31":{"1":"삼성전자","2":"SK하이닉스","3":"삼천당제약","4":"현대차","5":"흥아해운","6":"삼성SDI","7":"SK스퀘어","8":"두산에너빌리티","9":"SK이터닉스","10":"삼성전자우"},"4/01":{"1":"삼성전자","2":"SK하이닉스","3":"삼천당제약","4":"대우건설","5":"LIG넥스원","6":"HD현대중공업","7":"현대차","8":"펄어비스","9":"두산에너빌리티","10":"한화시스템"},"4/02":{"1":"삼성전자","2":"SK하이닉스","3":"삼천당제약","4":"인벤테라","5":"삼성SDI","6":"흥아해운","7":"LIG넥스원","8":"현대차","9":"대한광통신","10":"두산에너빌리티"},"4/03":{"1":"삼성전자","2":"SK하이닉스","3":"SK이터닉스","4":"LIG넥스원","5":"삼천당제약","6":"대한광통신","7":"한화솔루션","8":"SK오션플랜트","9":"삼성SDI","10":"신성이엔지"},"4/06":{"1":"삼성전자","2":"SK하이닉스","3":"한화오션","4":"삼천당제약","5":"삼성E&A","6":"대한광통신","7":"삼성SDI","8":"풍산","9":"SK이터닉스","10":"LIG넥스원"},"4/07":{"1":"삼성전자","2":"SK하이닉스","3":"삼천당제약","4":"삼성E&A","5":"LIG넥스원","6":"엘앤에프","7":"삼성SDI","8":"풍산홀딩스","9":"대우건설","10":"한화에어로스페이스"},"4/08":{"1":"삼성전자","2":"SK하이닉스","3":"삼천당제약","4":"현대건설","5":"대우건설","6":"현대차","7":"DL이앤씨","8":"GS건설","9":"삼성E&A","10":"대한광통신"},"4/09":{"1":"삼성전자","2":"SK하이닉스","3":"대우건설","4":"LIG넥스원","5":"현대차","6":"삼성SDI","7":"삼천당제약","8":"삼성E&A","9":"후성","10":"GS건설"},"4/10":{"1":"삼성전자","2":"SK하이닉스","3":"대한광통신","4":"대우건설","5":"삼성전기","6":"GS건설","7":"LIG넥스원","8":"현대차","9":"쏠리드","10":"현대건설"},"4/13":{"1":"삼성전자","2":"SK하이닉스","3":"대한광통신","4":"LIG넥스원","5":"LS ELECTRIC","6":"대우건설","7":"현대차","8":"삼성전기","9":"한화에어로스페이스","10":"남선알미늄"},"4/14":{"1":"SK하이닉스","2":"삼성전자","3":"미래에셋증권","4":"대한광통신","5":"LS ELECTRIC","6":"현대차","7":"대우건설","8":"삼성SDI","9":"LIG디펜스앤에어로스페이스","10":"삼성전기"},"4/15":{"1":"삼성전자","2":"SK하이닉스","3":"대우건설","4":"대한전선","5":"두산에너빌리티","6":"현대차","7":"GS건설","8":"미래에셋증권","9":"삼천당제약","10":"삼성전기"},"4/16":{"1":"삼성전자","2":"SK하이닉스","3":"두산에너빌리티","4":"현대차","5":"대우건설","6":"대한광통신","7":"우리기술","8":"OCI홀딩스","9":"광전자","10":"대한전선"},"4/17":{"1":"삼성전자","2":"SK하이닉스","3":"후성","4":"삼성SDI","5":"현대차","6":"삼성전기","7":"두산에너빌리티","8":"미래에셋벤처투자","9":"대우건설","10":"광전자"},"4/20":{"1":"SK하이닉스","2":"삼성전자","3":"두산에너빌리티","4":"삼성SDI","5":"현대차","6":"삼성전기","7":"이수페타시스","8":"주성엔지니어링","9":"에코프로","10":"대한전선"},"4/21":{"1":"SK하이닉스","2":"삼성전자","3":"삼성SDI","4":"대우건설","5":"삼성전기","6":"현대차","7":"두산에너빌리티","8":"LG에너지솔루션","9":"주성엔지니어링","10":"GS건설"},"4/22":{"1":"SK하이닉스","2":"삼성전자","3":"삼성SDI","4":"LIG디펜스앤에어로스페이스","5":"이수페타시스","6":"삼성전기","7":"HD현대중공업","8":"두산에너빌리티","9":"주성엔지니어링","10":"현대차"},"4/23":{"1":"삼성전자","2":"SK하이닉스","3":"두산에너빌리티","4":"삼성중공업","5":"삼성SDI","6":"삼성전기","7":"LS ELECTRIC","8":"현대차","9":"대우건설","10":"대원전선"},"4/24":{"1":"삼성전자","2":"SK하이닉스","3":"두산에너빌리티","4":"현대차","5":"고영","6":"삼성SDI","7":"제주반도체","8":"대원전선","9":"삼성중공업","10":"삼성전기"},"4/27":{"1":"SK하이닉스","2":"삼성전자","3":"한미반도체","4":"두산에너빌리티","5":"현대차","6":"LS ELECTRIC","7":"삼성SDI","8":"대한광통신","9":"로보티즈","10":"제주반도체"},"4/28":{"1":"SK하이닉스","2":"삼성전자","3":"현대차","4":"대우건설","5":"삼성SDI","6":"POSCO홀딩스","7":"LS ELECTRIC","8":"한미반도체","9":"한화솔루션","10":"LG전자"},"4/29":{"1":"삼성전자","2":"SK하이닉스","3":"삼성SDI","4":"대한전선","5":"현대차","6":"LS ELECTRIC","7":"대원전선","8":"두산에너빌리티","9":"SK스퀘어","10":"아주IB투자"},"4/30":{"1":"삼성전자","2":"SK하이닉스","3":"한미반도체","4":"대한전선","5":"산일전기","6":"현대차","7":"삼성SDI","8":"삼성전기","9":"한화솔루션","10":"LG전자"},"5/04":{"1":"SK하이닉스","2":"삼성전자","3":"SK스퀘어","4":"산일전기","5":"삼성전기","6":"대한광통신","7":"대한전선","8":"POSCO홀딩스","9":"현대차","10":"삼성SDI"},"5/06":{"1":"삼성전자","2":"SK하이닉스","3":"미래에셋증권","4":"SK스퀘어","5":"현대차","6":"삼성전자우","7":"대한전선","8":"삼성전기","9":"삼성증권","10":"한미반도체"},"5/07":{"1":"삼성전자","2":"SK하이닉스","3":"현대차","4":"두산에너빌리티","5":"삼성E&A","6":"SK스퀘어","7":"삼성전자우","8":"대한광통신","9":"SKC","10":"LS ELECTRIC"},"5/08":{"1":"삼성전자","2":"SK하이닉스","3":"현대차","4":"현대무벡스","5":"대한광통신","6":"현대오토에버","7":"대한전선","8":"현대모비스","9":"두산에너빌리티","10":"레인보우로보틱스"},"5/11":{"1":"SK하이닉스","2":"삼성전자","3":"현대차","4":"SK스퀘어","5":"대한광통신","6":"현대오토에버","7":"삼성전기","8":"삼성전자우","9":"삼성SDI","10":"삼성중공업"},"5/12":{"1":"SK하이닉스","2":"삼성전자","3":"현대차","4":"LG전자","5":"삼성전기","6":"SK스퀘어","7":"대한광통신","8":"현대무벡스","9":"삼성SDI","10":"한미반도체"},"5/13":{"1":"SK하이닉스","2":"삼성전자","3":"현대차","4":"LG전자","5":"현대모비스","6":"삼성전기","7":"SK스퀘어","8":"현대오토에버","9":"두산에너빌리티","10":"삼성전자우"},"5/14":{"1":"삼성전자","2":"SK하이닉스","3":"현대차","4":"LG전자","5":"LG씨엔에스","6":"현대모비스","7":"SK스퀘어","8":"삼성전기","9":"두산에너빌리티","10":"삼성전자우"},"5/15":{"1":"SK하이닉스","2":"삼성전자","3":"현대차","4":"LG전자","5":"두산로보틱스","6":"삼성전기","7":"LG씨엔에스","8":"코스모로보틱스","9":"SK스퀘어","10":"현대모비스"},"5/18":{"1":"SK하이닉스","2":"삼성전자","3":"현대차","4":"LG전자","5":"삼성전기","6":"한미반도체","7":"SK스퀘어","8":"LS ELECTRIC","9":"두산로보틱스","10":"두산에너빌리티"},"5/19":{"1":"삼성전자","2":"SK하이닉스","3":"현대차","4":"LG전자","5":"두산로보틱스","6":"삼성전기","7":"코스모로보틱스","8":"SK스퀘어","9":"주성엔지니어링","10":"현대모비스"},"5/20":{"1":"삼성전자","2":"SK하이닉스","3":"삼성전기","4":"현대차","5":"코스모로보틱스","6":"LG전자","7":"주성엔지니어링","8":"SK스퀘어","9":"삼성전자우","10":"현대모비스"},"5/21":{"1":"삼성전자","2":"SK하이닉스","3":"삼성전기","4":"LG전자","5":"현대차","6":"현대모비스","7":"SK스퀘어","8":"삼성전자우","9":"제주반도체","10":"한미반도체"},"5/22":{"1":"삼성전자","2":"SK하이닉스","3":"삼성전기","4":"LG전자","5":"현대차","6":"주성엔지니어링","7":"SK스퀘어","8":"에코프로","9":"현대모비스","10":"삼성SDI"}};
 
 let CUSTOM={};try{CUSTOM=JSON.parse(localStorage.getItem('rkt4')||'{}');}catch(e){}
 let SHEET_DATA=null;
-let SCRIPT_URL=localStorage.getItem('surl')||'';
+let SCRIPT_URL=FIXED_SCRIPT_URL; // 고정 URL 사용
 let WIN=30,FILTER='all',SORT='score',SORT_ASC=false,SEL=null,chartObj=null,VIEW='list';
+const SESSION_ID=Math.random().toString(36).slice(2)+Date.now().toString(36);
 
-// 세션 ID 생성 (방문자 구분용)
-const SESSION_ID = Math.random().toString(36).slice(2) + Date.now().toString(36);
-
-// ── 방문자 카운터 ──────────────────────────────
-function recordVisit() {
-  if (!SCRIPT_URL) return;
-  const url = SCRIPT_URL + '?action=visit&sid=' + SESSION_ID + '&t=' + Date.now();
-  fetch(url).then(r => r.json()).then(data => {
-    if (data.total !== undefined) {
-      document.getElementById('vTotal').textContent = data.total.toLocaleString();
-    }
-  }).catch(() => {});
+// ── 관리자 여부 확인 ──
+// localStorage에 관리자 비밀번호가 있으면 관리자 버튼 표시
+function checkAdmin(){
+  const isAdmin=!!localStorage.getItem('surl');
+  document.getElementById('setupBtn').style.display=isAdmin?'':'none';
+  document.getElementById('syncBtn').style.display=isAdmin?'':'none';
+  document.getElementById('syncSt').style.display=isAdmin?'':'none';
+  document.getElementById('adminSection').classList.toggle('show',isAdmin);
 }
 
-function fetchStats() {
-  if (!SCRIPT_URL) return;
-  const url = SCRIPT_URL + '?action=stats&t=' + Date.now();
-  fetch(url).then(r => r.json()).then(data => {
-    if (data.current !== undefined) document.getElementById('vCurrent').textContent = data.current;
-    if (data.total !== undefined) document.getElementById('vTotal').textContent = data.total.toLocaleString();
-  }).catch(() => {});
+// ── 방문자 카운터 ──
+function recordVisit(){
+  if(!SCRIPT_URL)return;
+  fetch(SCRIPT_URL+'?action=visit&sid='+SESSION_ID+'&t='+Date.now())
+    .then(r=>r.json()).then(d=>{if(d.total!==undefined)document.getElementById('vTotal').textContent=d.total.toLocaleString();}).catch(()=>{});
+}
+function fetchStats(){
+  if(!SCRIPT_URL)return;
+  fetch(SCRIPT_URL+'?action=stats&t='+Date.now())
+    .then(r=>r.json()).then(d=>{
+      if(d.current!==undefined)document.getElementById('vCurrent').textContent=d.current;
+      if(d.total!==undefined)document.getElementById('vTotal').textContent=d.total.toLocaleString();
+    }).catch(()=>{});
 }
 
-// ── 모달 ──────────────────────────────────────
-function openModal(){document.getElementById('urlInput').value=SCRIPT_URL;document.getElementById('modalErr').className='merr';document.getElementById('modalBg').classList.add('show');}
+// ── 모달 (관리자 전용) ──
+function openModal(){document.getElementById('urlInput').value=localStorage.getItem('surl')||'';document.getElementById('modalErr').className='merr';document.getElementById('modalBg').classList.add('show');}
 function closeModal(){document.getElementById('modalBg').classList.remove('show');}
 function saveUrl(){
   const url=document.getElementById('urlInput').value.trim();
   if(!url){showModalErr('URL을 입력해주세요');return;}
   if(!url.includes('script.google.com')){showModalErr('올바른 Apps Script URL이 아닙니다');return;}
-  SCRIPT_URL=url;localStorage.setItem('surl',url);
-  closeModal();
-  recordVisit();
-  fetchStats();
-  doSync();
+  localStorage.setItem('surl',url);
+  SCRIPT_URL=url;
+  closeModal();checkAdmin();doSync();
 }
 function showModalErr(msg){const e=document.getElementById('modalErr');e.textContent=msg;e.className='merr show';}
 
-// ── 동기화 ────────────────────────────────────
+// ── 동기화 (관리자 전용) ──
 async function doSync(){
-  if(!SCRIPT_URL){openModal();return;}
+  if(!SCRIPT_URL)return;
   const btn=document.getElementById('syncBtn'),ic=document.getElementById('sicon');
   btn.disabled=true;ic.classList.add('spin');
   setSS('ld','⟳ 동기화 중...');
   let ok=false;
   try{
     const res=await fetch(SCRIPT_URL+'?t='+Date.now(),{redirect:'follow'});
-    const text=await res.text();
-    const d=JSON.parse(text);
+    const d=JSON.parse(await res.text());
     if(d&&d.rankings){SHEET_DATA=d;ok=true;}
   }catch(e1){
     try{
       await new Promise((resolve,reject)=>{
-        const cbName='_cb'+Date.now();
-        const url=SCRIPT_URL+'?cb='+cbName+'&t='+Date.now();
-        window[cbName]=function(d){SHEET_DATA=d;delete window[cbName];resolve();};
+        const cb='_cb'+Date.now();
+        window[cb]=function(d){SHEET_DATA=d;delete window[cb];resolve();};
         const s=document.createElement('script');
-        s.src=url;s.onerror=()=>{delete window[cbName];reject();};
+        s.src=SCRIPT_URL+'?cb='+cb+'&t='+Date.now();
+        s.onerror=()=>{delete window[cb];reject();};
         document.head.appendChild(s);
-        setTimeout(()=>{delete window[cbName];reject();},12000);
+        setTimeout(()=>{delete window[cb];reject();},12000);
       });
       ok=true;
     }catch(e2){}
@@ -362,19 +386,30 @@ async function doSync(){
     setSS('ok','✓ 연동됨 · '+now.slice(5,16));
     document.getElementById('stU').textContent=now.slice(0,16);
     SEL=null;renderAll();
-  }else{
-    setSS('err','✗ 실패 — URL 설정 확인');
-  }
+  }else{setSS('err','✗ 실패');}
 }
 function setSS(t,m){const e=document.getElementById('syncSt');e.className='ss '+t;e.textContent=m;}
 
-// ── 데이터 ────────────────────────────────────
+// ── 앱 시작 시 자동으로 시트 데이터 불러오기 (모든 방문자) ──
+async function autoLoad(){
+  try{
+    const res=await fetch(FIXED_SCRIPT_URL+'?t='+Date.now(),{redirect:'follow'});
+    const d=JSON.parse(await res.text());
+    if(d&&d.rankings){
+      SHEET_DATA=d;
+      const lastSync=localStorage.getItem('lastSync');
+      document.getElementById('stU').textContent=lastSync?lastSync.slice(0,16):'시트 연동됨';
+      renderAll();
+    }
+  }catch(e){}
+}
+
+// ── 데이터 ──
 function merged(){return Object.assign({},SHEET_DATA?SHEET_DATA.rankings:BUILT_IN,CUSTOM);}
 function sortDates(data){return Object.keys(data).sort((a,b)=>{const p=s=>{const[m,d]=s.split('/').map(Number);return new Date(m>=12?2025:2026,m-1,d);};return p(a)-p(b);});}
 function winDates(){const all=sortDates(merged());return WIN>=999?all:all.slice(-WIN);}
 function buildMap(dates){const data=merged(),map={};dates.forEach(d=>{const day=data[d];if(!day)return;Object.entries(day).forEach(([r,s])=>{if(!s)return;if(!map[s])map[s]={};map[s][d]=parseInt(r);});});return map;}
 
-// ── 분석 ──────────────────────────────────────
 function calcStats(name,history,dates,allDates){
   const present=dates.filter(d=>history[d]!==undefined);
   if(!present.length)return null;
@@ -404,7 +439,6 @@ function calcStats(name,history,dates,allDates){
   return{present,ranks,freq,avgRank,std,streak,trend,score,isNew,isLeader,isSteady,isRising,isFalling,avg1:a1,avg2:a2};
 }
 
-// ── 렌더 ──────────────────────────────────────
 function changeDays(){WIN=parseInt(document.getElementById('dSel').value);SEL=null;renderAll();}
 function setFilter(f){FILTER=f;['All','Leader','Steady','Rising','New','Falling'].forEach(x=>document.getElementById('f'+x).classList.toggle('active',x.toLowerCase()===f));renderAll();}
 function setView(v){
@@ -552,7 +586,6 @@ function switchList(name){
   if(s)showChart(name,s,dates,map);
 }
 
-// ── 수동 입력 ──────────────────────────────────
 function toggleD(){const p=document.getElementById('dPanel'),a=document.getElementById('da');const o=p.classList.toggle('open');a.textContent=o?'▼':'▶';}
 function showS(m,t){const e=document.getElementById('smsg');e.textContent=m;e.className='smsg '+t;setTimeout(()=>e.className='smsg',3000);}
 function addData(){
@@ -577,16 +610,43 @@ function clearCustom(){
   CUSTOM={};localStorage.removeItem('rkt4');showS('초기화됨','ok');SEL=null;renderAll();
 }
 
-// ── 초기화 ────────────────────────────────────
-const lastSync=localStorage.getItem('lastSync');
-if(SCRIPT_URL){
-  setSS('bi','URL 저장됨 — 동기화 버튼을 눌러주세요');
-  recordVisit();           // 방문 기록
-  fetchStats();            // 현재 접속자 조회
-  setInterval(fetchStats, 60000); // 1분마다 갱신
+// ── 다크/라이트 모드 ──
+function toggleTheme(){
+  const isLight=document.body.classList.toggle('light');
+  localStorage.setItem('theme', isLight?'light':'dark');
+  document.getElementById('themeLabel').style.opacity = isLight?'0.4':'1';
+  document.getElementById('themeLabelR').style.opacity = isLight?'1':'0.4';
+  // 차트 색상 갱신
+  if(chartObj) chartObj.destroy(); chartObj=null;
+  if(SEL){
+    const dates=winDates(),allDates=sortDates(merged()),map=buildMap(dates);
+    const s=calcStats(SEL,map[SEL]||{},dates,allDates);
+    if(s)showChart(SEL,s,dates,map);
+  }
 }
+function initTheme(){
+  const saved=localStorage.getItem('theme');
+  if(saved==='light'){
+    document.body.classList.add('light');
+    document.getElementById('themeLabel').style.opacity='0.4';
+    document.getElementById('themeLabelR').style.opacity='1';
+  }
+}
+
+// ── 초기화 ──
+initTheme();
+checkAdmin();
+const lastSync=localStorage.getItem('lastSync');
 if(lastSync)document.getElementById('stU').textContent=lastSync.slice(0,16);
 renderAll();
+
+// 모든 방문자: 앱 시작 시 자동으로 시트 데이터 불러오기
+autoLoad();
+
+// 방문자 카운터
+recordVisit();
+fetchStats();
+setInterval(fetchStats,60000);
 </script>
 </body>
 </html>
