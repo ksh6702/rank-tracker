@@ -534,7 +534,7 @@ function renderHeatmap(){
   const dates=winDates(),allDates=sortDates(merged()),map=buildMap(dates),names=Object.keys(map),stats={};
   names.forEach(n=>{const s=calcStats(n,map[n],dates,allDates);if(s)stats[n]=s;});
   const sorted=names.filter(n=>stats[n]).sort((a,b)=>stats[b].score-stats[a].score).slice(0,40);
-  const show=dates.slice(-Math.min(dates.length,40));
+  const show=dates; // 전체 날짜 표시 (가로 스크롤)
   let html='<thead><tr><th class="sth">종목</th>';
   show.forEach(d=>{html+=`<th>${d}</th>`;});
   html+='</tr></thead><tbody>';
