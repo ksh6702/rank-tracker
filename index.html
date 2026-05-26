@@ -273,6 +273,7 @@ textarea.dta:focus{border-color:var(--accent)}
     <span><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#f5a623;vertical-align:middle;margin-right:3px"></span>1~3위</span>
     <span><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#3ecf8e;vertical-align:middle;margin-right:3px"></span>4~6위</span>
     <span><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#4f8ef7;vertical-align:middle;margin-right:3px"></span>7~10위</span>
+    <span><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#a78bfa;vertical-align:middle;margin-right:3px"></span>11~15위</span>
   </div>
   <div class="heatmap-outer"><table class="ht" id="hmT"></table></div>
 </div>
@@ -385,7 +386,7 @@ async function autoLoad(){
 function merged(){return Object.assign({},SHEET_DATA?SHEET_DATA.rankings:BUILT_IN,CUSTOM);}
 function sortDates(data){return Object.keys(data).sort((a,b)=>{const p=s=>{const[m,d]=s.split('/').map(Number);return new Date(m>=12?2025:2026,m-1,d);};return p(a)-p(b);});}
 function winDates(){const all=sortDates(merged());return WIN>=999?all:all.slice(-WIN);}
-function buildMap(dates){const data=merged(),map={};dates.forEach(d=>{const day=data[d];if(!day)return;Object.entries(day).forEach(([r,s])=>{if(!s)return;if(!map[s])map[s]={};map[s][d]=parseInt(r);});});return map;}
+function buildMap(dates){const data=merged(),map={};dates.forEach(d=>{const day=data[d];if(!day)return;Object.entries(day).forEach(([r,s])=>{if(!s)return;const rn=parseInt(r);if(rn>15)return;if(!map[s])map[s]={};map[s][d]=rn;});});return map;}
 
 function calcStats(name,history,dates,allDates){
   const present=dates.filter(d=>history[d]!==undefined);
@@ -549,7 +550,7 @@ function renderHeatmap(){
     show.forEach(d=>{
       const r=h[d];
       if(!r){html+=`<td><div class="hc" style="background:var(--surface2);color:var(--text3)">—</div></td>`;return;}
-      const bg=r<=3?'rgba(245,166,35,0.8)':r<=6?'rgba(62,207,142,0.65)':'rgba(79,142,247,0.55)';
+      const bg=r<=3?'rgba(245,166,35,0.8)':r<=6?'rgba(62,207,142,0.65)':r<=10?'rgba(79,142,247,0.55)':'rgba(167,139,250,0.5)';
       html+=`<td><div class="hc" style="background:${bg};color:#fff">${r}</div></td>`;
     });
     html+='</tr>';
