@@ -189,13 +189,23 @@ textarea.dta:focus{border-color:var(--accent)}
       </div>
       <span class="theme-label" id="themeLabelR" style="opacity:0.4">라이트</span>
     </div>
-    <span style="font-size:11px;color:var(--text3)">기간</span>
-    <select class="ctrl" id="dSel" onchange="changeDays()">
-      <option value="5">5일</option>
-      <option value="10">10일</option><option value="20">20일</option>
-      <option value="30" selected>30일</option><option value="60">60일</option>
-      <option value="999">전체</option>
-    </select>
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+      <span style="font-size:11px;color:var(--text3)">기간</span>
+      <select class="ctrl" id="dSel" onchange="changeDays()">
+        <option value="5">5일</option>
+        <option value="10">10일</option>
+        <option value="20">20일</option>
+        <option value="30" selected>30일</option>
+        <option value="60">60일</option>
+        <option value="999">전체</option>
+        <option value="custom">직접설정</option>
+      </select>
+      <div id="customRange" style="display:none;align-items:center;gap:4px">
+        <input type="date" id="dateFrom" class="ctrl" style="padding:4px 6px;font-size:11px;width:120px" onchange="applyCustomRange()">
+        <span style="font-size:11px;color:var(--text3)">~</span>
+        <input type="date" id="dateTo" class="ctrl" style="padding:4px 6px;font-size:11px;width:120px" onchange="applyCustomRange()">
+      </div>
+    </div>
     <!-- 관리자 전용 버튼: URL이 저장된 경우에만 표시 -->
     <button class="hbtn g" onclick="openModal()" id="setupBtn" style="display:none">⚙ URL 설정</button>
     <button class="hbtn a" onclick="doSync()" id="syncBtn" style="display:none"><span id="sicon">↻</span> 시트 동기화</button>
@@ -385,7 +395,16 @@ async function autoLoad(){
 // ── 데이터 ──
 function merged(){return Object.assign({},SHEET_DATA?SHEET_DATA.rankings:BUILT_IN,CUSTOM);}
 function sortDates(data){return Object.keys(data).sort((a,b)=>{const p=s=>{const[m,d]=s.split('/').map(Number);return new Date(m>=12?2025:2026,m-1,d);};return p(a)-p(b);});}
-function winDates(){const all=sortDates(merged());return WIN>=999?all:all.slice(-WIN);}
+function winDates(){
+  const all = sortDates(merged());
+  if(CUSTOM_FROM && CUSTOM_TO){
+    return all.filter(d => {
+      const p = s => { const[m,dy]=s.split('/').map(Number); return new Date(m>=12?2025:2026,m-1,dy); };
+      return p(d) >= p(CUSTOM_FROM) && p(d) <= p(CUSTOM_TO);
+    });
+  }
+  return WIN>=999 ? all : all.slice(-WIN);
+}
 function buildMap(dates){const data=merged(),map={};dates.forEach(d=>{const day=data[d];if(!day)return;Object.entries(day).forEach(([r,s])=>{if(!s)return;const rn=parseInt(r);if(rn>15)return;if(!map[s])map[s]={};map[s][d]=rn;});});return map;}
 
 function calcStats(name,history,dates,allDates){
@@ -417,7 +436,58 @@ function calcStats(name,history,dates,allDates){
   return{present,ranks,freq,avgRank,std,streak,trend,score,isNew,isLeader,isSteady,isRising,isFalling,avg1:a1,avg2:a2};
 }
 
-function changeDays(){WIN=parseInt(document.getElementById('dSel').value);SEL=null;renderAll();}
+// ── 날짜 입력창 스타일 ──
+const dateInputStyle = document.createElement('style');
+dateInputStyle.textContent = `
+  input[type="date"].ctrl::-webkit-calendar-picker-indicator { filter: invert(0.6); cursor:pointer; }
+  body.light input[type="date"].ctrl::-webkit-calendar-picker-indicator { filter: none; }
+`;
+document.head.appendChild(dateInputStyle);
+
+let CUSTOM_FROM = '', CUSTOM_TO = '';
+
+function changeDays(){
+  const val = document.getElementById('dSel').value;
+  const customDiv = document.getElementById('customRange');
+  if(val === 'custom'){
+    customDiv.style.display = 'flex';
+    // 기본값: 전체 날짜 범위로 설정
+    const allDates = sortDates(merged());
+    if(!CUSTOM_FROM && allDates.length){
+      const first = allDates[0];
+      const last = allDates[allDates.length-1];
+      document.getElementById('dateFrom').value = dateStrToInput(first);
+      document.getElementById('dateTo').value = dateStrToInput(last);
+      CUSTOM_FROM = first;
+      CUSTOM_TO = last;
+    }
+  } else {
+    customDiv.style.display = 'none';
+    CUSTOM_FROM = ''; CUSTOM_TO = '';
+    WIN = parseInt(val);
+  }
+  SEL = null; renderAll();
+}
+
+function dateStrToInput(d){
+  // "12/01" → "2025-12-01", "1/02" → "2026-01-02"
+  const [m, day] = d.split('/').map(Number);
+  const year = m >= 12 ? 2025 : 2026;
+  return `${year}-${String(m).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+}
+
+function inputToDateStr(input){
+  // "2026-01-02" → "1/02"
+  if(!input) return '';
+  const [, m, d] = input.split('-').map(Number);
+  return `${m}/${String(d).padStart(2,'0')}`;
+}
+
+function applyCustomRange(){
+  CUSTOM_FROM = inputToDateStr(document.getElementById('dateFrom').value);
+  CUSTOM_TO = inputToDateStr(document.getElementById('dateTo').value);
+  SEL = null; renderAll();
+}
 function setFilter(f){FILTER=f;['All','Leader','Steady','Rising','New','Falling'].forEach(x=>document.getElementById('f'+x).classList.toggle('active',x.toLowerCase()===f));renderAll();}
 function setView(v){
   VIEW=v;['list','heatmap'].forEach(x=>document.getElementById('vt-'+x).classList.toggle('active',x===v));
